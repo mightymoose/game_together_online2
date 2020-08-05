@@ -1,0 +1,30 @@
+name: Check Formatting
+
+on: push
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    name: OTP ${{ matrix.otp }} | Elixir ${{ matrix.elixir }} | Node ${{ matrix.node }} | OS ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        otp: [22.0.7]
+        elixir: [1.10.4]
+        node: [14.6.0]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1.4.0
+        with:
+          otp-version: ${{ matrix.otp }}
+          elixir-version: ${{ matrix.elixir }}
+
+      - name: Install dependencies
+        run: |
+          mix local.rebar --force
+          mix local.hex --force
+          mix deps.get
+
+      - name: Check Formatting
+        run: mix format --check-formatted
