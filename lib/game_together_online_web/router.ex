@@ -18,6 +18,8 @@ defmodule GameTogetherOnlineWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+
+    get "/users/new", UserController, :new
   end
 
   # Other scopes may use custom stacks.
