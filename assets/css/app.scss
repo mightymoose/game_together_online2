@@ -5,3 +5,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.card {
+    @apply bg-white py-6 px-8 rounded border border-gray-400;
+}
+
+.btn-primary {
+    @apply w-full py-2 px-4 bg-blue-600 rounded text-white;
+}
+
+.btn-primary:hover {
+    @apply bg-blue-700;
+}
+
+.btn-primary:disabled {
+    @apply opacity-50;
+}
+
+.text-input {
+    @apply w-full px-2 py-3 appearance-none border rounded text-gray-700 border-gray-400;
+}
+
+.text-input:focus {
+    @apply outline-none;
+}
