@@ -1,0 +1,5 @@
+<%= form_for @changeset, @action, fn f -> %>
+    <%= text_input f, :username, class: "text-input mb-4", placeholder: "Username" %>
+    <%= error_tag f, :username %>
+    <%= submit "Create A Game", class: "btn-primary" %>
+<% end %>
