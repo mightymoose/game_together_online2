@@ -29,3 +29,7 @@
 .text-input:focus {
     @apply outline-none;
 }
+
+.invalid-feedback {
+    @apply italic text-sm text-red-500;
+}
