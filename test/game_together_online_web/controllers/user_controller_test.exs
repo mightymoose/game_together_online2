@@ -23,11 +23,18 @@ defmodule GameTogetherOnlineWeb.UserControllerTest do
   end
 
   describe "create user" do
-    test "redirects when data is valid", %{conn: conn} do
+    test "redirects to a random game when data is valid", %{conn: conn} do
       attrs = Factory.params_for(:user)
       conn = post(conn, Routes.user_path(conn, :create), user: attrs)
 
       assert redirected_to(conn) == Routes.game_path(conn, :index)
+    end
+
+    test "redirects to the requested url when there is one", %{conn: conn} do
+      attrs = Factory.params_for(:user)
+      conn = post(conn, Routes.user_path(conn, :create), user: attrs, redirect: "/some_url")
+
+      assert redirected_to(conn) == "/some_url"
     end
 
     test "creates a session when data is valid", %{conn: conn} do
@@ -68,6 +75,14 @@ defmodule GameTogetherOnlineWeb.UserControllerTest do
 
       conn = put(conn, Routes.user_path(conn, :update, user), user: attrs)
       assert html_response(conn, 200) =~ "Create A Game"
+    end
+
+    test "redirects to the requested url when there is one", %{conn: conn} do
+      user = Factory.insert(:user)
+      attrs = Factory.params_for(:user)
+      conn = put(conn, Routes.user_path(conn, :update, user, redirect: "/some_url"), user: attrs)
+
+      assert redirected_to(conn) == "/some_url"
     end
   end
 end
