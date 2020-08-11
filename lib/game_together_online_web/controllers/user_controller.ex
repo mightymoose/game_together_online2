@@ -12,7 +12,7 @@ defmodule GameTogetherOnlineWeb.UserController do
       |> Users.get_user!()
       |> User.changeset()
 
-    render(conn, "edit.html", changeset: changeset)
+    render(conn, "edit.html", changeset: changeset, id: id)
   end
 
   def create(conn, %{"user" => user_params} = params) do
@@ -37,12 +37,12 @@ defmodule GameTogetherOnlineWeb.UserController do
         |> redirect(to: redirect_url(conn, params))
 
       {:error, changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
+        render(conn, "edit.html", user: user, changeset: changeset, id: id)
     end
   end
 
   defp redirect_url(_conn, %{"redirect" => redirect}), do: redirect
-  defp redirect_url(conn, _params), do: Routes.game_path(conn, :index)
+  defp redirect_url(conn, _params), do: Routes.game_path(conn, :show, 123)
 
   defp add_current_user_to_session(conn, %{id: id}), do: put_session(conn, :current_user_id, id)
 end
