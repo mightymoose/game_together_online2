@@ -18,9 +18,10 @@ defmodule GameTogetherOnlineWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
-    live "/game", GameLive, :index
+    live "/games/:game_id", GameLive, :show
 
     resources "/users", UserController, except: [:index, :show, :delete]
+    get "/games/:game_id/join", GameController, :join
   end
 
   # Other scopes may use custom stacks.
