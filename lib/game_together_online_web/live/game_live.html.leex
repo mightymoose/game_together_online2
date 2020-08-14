@@ -1,9 +1,9 @@
 Play the game here
 
-<%= @game_id %>
-
-<div class="grid grid-cols-4">
-    <%= for card <- GameTogetherOnline.Cards.list_cards() do %>
-        <%= GameTogetherOnlineWeb.CardView.render("show.html", card: card) %>
-    <% end %>
-</div>
+<%= for hand <- @deal.hands do %>
+    <div class="flex">
+        <%= for card <- hand.cards do %>
+            <%= GameTogetherOnlineWeb.CardView.render("show.html", card: card) %>
+        <% end %>
+    </div>
+<% end %>

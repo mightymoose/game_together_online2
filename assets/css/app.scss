@@ -6,6 +6,22 @@
 @tailwind components;
 @tailwind utilities;
 
+@media (min-aspect-ratio: 1/1) {
+    .square {
+        width: 100vh;
+        height: 100vh;
+        background-color: red;
+    }
+}
+
+@media (max-aspect-ratio: 1/1) {
+    .square {
+        width: 100vw;
+        height: 100vw;
+        background-color: red;
+    }
+}
+
 .card {
     @apply bg-white py-6 px-8 rounded border border-gray-400;
 }
