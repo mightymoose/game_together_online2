@@ -9,3 +9,59 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias GameTogetherOnline.Suits.Suit
+alias GameTogetherOnline.Ranks.Rank
+alias GameTogetherOnline.Repo
+alias Ecto.Query
+
+require Ecto.Query
+
+suits = [
+  [name: "Spades"],
+  [name: "Clubs"],
+  [name: "Hearts"],
+  [name: "Diamonds"]
+]
+
+ranks = [
+  [name: "Two"],
+  [name: "Three"],
+  [name: "Four"],
+  [name: "Five"],
+  [name: "Six"],
+  [name: "Seven"],
+  [name: "Eight"],
+  [name: "Nine"],
+  [name: "Ten"],
+  [name: "Jack"],
+  [name: "Queen"],
+  [name: "King"],
+  [name: "Ace"]
+]
+
+Enum.each(suits, fn suit_attrs ->
+  suit_exists? =
+    Suit
+    |> Query.where(^suit_attrs)
+    |> Repo.exists?()
+
+  if !suit_exists? do
+    Repo.insert_all(Suit, [
+      suit_attrs ++ [inserted_at: DateTime.utc_now(), updated_at: DateTime.utc_now()]
+    ])
+  end
+end)
+
+Enum.each(ranks, fn rank_attrs ->
+  rank_exists? =
+    Rank
+    |> Query.where(^rank_attrs)
+    |> Repo.exists?()
+
+  if !rank_exists? do
+    Repo.insert_all(Rank, [
+      rank_attrs ++ [inserted_at: DateTime.utc_now(), updated_at: DateTime.utc_now()]
+    ])
+  end
+end)
