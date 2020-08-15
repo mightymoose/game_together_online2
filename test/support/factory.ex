@@ -7,6 +7,7 @@ defmodule GameTogetherOnline.Factory do
   alias GameTogetherOnline.Hands.Hand
   alias GameTogetherOnline.Ranks.Rank
   alias GameTogetherOnline.Suits.Suit
+  alias GameTogetherOnline.Cards.Card
 
   def user_factory do
     %User{
@@ -61,5 +62,12 @@ defmodule GameTogetherOnline.Factory do
           "diamonds"
         ])
     }
+  end
+
+  def card_factory do
+    rank = insert(:rank)
+    suit = insert(:suit)
+
+    %Card{rank_id: rank.id, suit_id: suit.id}
   end
 end
