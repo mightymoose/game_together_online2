@@ -27,7 +27,7 @@ defmodule GameTogetherOnlineWeb.UserControllerTest do
       attrs = Factory.params_for(:user)
       conn = post(conn, Routes.user_path(conn, :create), user: attrs)
 
-      assert redirected_to(conn) == Routes.game_path(conn, :show, 123)
+      assert redirected_to(conn) == Routes.game_path(conn, :new)
     end
 
     test "redirects to the requested url when there is one", %{conn: conn} do
@@ -66,7 +66,7 @@ defmodule GameTogetherOnlineWeb.UserControllerTest do
       attrs = Factory.params_for(:user)
 
       conn = put(conn, Routes.user_path(conn, :update, user), user: attrs)
-      assert redirected_to(conn) == Routes.game_path(conn, :show, 123)
+      assert redirected_to(conn) == Routes.game_path(conn, :new)
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

@@ -42,7 +42,7 @@ defmodule GameTogetherOnlineWeb.UserController do
   end
 
   defp redirect_url(_conn, %{"redirect" => redirect}), do: redirect
-  defp redirect_url(conn, _params), do: Routes.game_path(conn, :show, 123)
+  defp redirect_url(conn, _params), do: Routes.game_path(conn, :new)
 
   defp add_current_user_to_session(conn, %{id: id}), do: put_session(conn, :current_user_id, id)
 end
