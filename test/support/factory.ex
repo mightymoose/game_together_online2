@@ -5,6 +5,8 @@ defmodule GameTogetherOnline.Factory do
   alias GameTogetherOnline.Games.Game
   alias GameTogetherOnline.Deals.Deal
   alias GameTogetherOnline.Hands.Hand
+  alias GameTogetherOnline.Ranks.Rank
+  alias GameTogetherOnline.Suits.Suit
 
   def user_factory do
     %User{
@@ -26,5 +28,38 @@ defmodule GameTogetherOnline.Factory do
     %{id: deal_id} = insert(:deal)
 
     %Hand{deal_id: deal_id}
+  end
+
+  def rank_factory do
+    %Rank{
+      name:
+        sequence(:name, [
+          "two",
+          "three",
+          "four",
+          "five",
+          "six",
+          "seven",
+          "eight",
+          "nine",
+          "ten",
+          "jack",
+          "queen",
+          "king",
+          "ace"
+        ])
+    }
+  end
+
+  def suit_factory do
+    %Suit{
+      name:
+        sequence(:name, [
+          "spades",
+          "hearts",
+          "clubs",
+          "diamonds"
+        ])
+    }
   end
 end
