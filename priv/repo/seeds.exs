@@ -11,7 +11,10 @@
 # and so on) as they will fail if something goes wrong.
 
 alias GameTogetherOnline.Suits.Suit
+alias GameTogetherOnline.Suits
 alias GameTogetherOnline.Ranks.Rank
+alias GameTogetherOnline.Ranks
+alias GameTogetherOnline.Cards.Card
 alias GameTogetherOnline.Repo
 alias Ecto.Query
 
@@ -65,3 +68,24 @@ Enum.each(ranks, fn rank_attrs ->
     ])
   end
 end)
+
+for rank <- Ranks.list_ranks(), suit <- Suits.list_suits() do
+  rank_id = rank.id
+  suit_id = suit.id
+
+  card_exists? =
+    Card
+    |> Query.where(rank_id: ^rank_id, suit_id: ^suit_id)
+    |> Repo.exists?()
+
+  if !card_exists? do
+    Repo.insert_all(Card, [
+      [
+        rank_id: rank_id,
+        suit_id: suit_id,
+        inserted_at: DateTime.utc_now(),
+        updated_at: DateTime.utc_now()
+      ]
+    ])
+  end
+end

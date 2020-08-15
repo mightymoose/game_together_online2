@@ -1,34 +1,12 @@
 defmodule GameTogetherOnline.Cards do
+  alias GameTogetherOnline.Repo
   alias GameTogetherOnline.Cards.Card
 
-  def list_suits do
-    [
-      :spades,
-      :clubs,
-      :diamonds,
-      :hearts
-    ]
-  end
+  import Ecto.Query
 
-  def list_ranks do
-    [
-      :two,
-      :three,
-      :four,
-      :five,
-      :six,
-      :seven,
-      :eight,
-      :nine,
-      :ten,
-      :jack,
-      :queen,
-      :king,
-      :ace
-    ]
-  end
-
-  def list_cards do
-    for rank <- list_ranks(), suit <- list_suits(), do: %Card{suit: suit, rank: rank}
-  end
+  def list_cards(),
+    do:
+      Card
+      |> preload([:rank, :suit])
+      |> Repo.all()
 end
