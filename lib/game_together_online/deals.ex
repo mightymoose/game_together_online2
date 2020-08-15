@@ -15,7 +15,11 @@ defmodule GameTogetherOnline.Deals do
       {:ok,
        %Deal{
          deal
-         | hands: Enum.map(0..3, fn _i -> Hands.create() end)
+         | hands:
+             Enum.map(0..3, fn _i ->
+               {:ok, hand} = Hands.create_hand(%{deal_id: deal.id})
+               hand
+             end)
        }}
 
   defp create_hands(error), do: error

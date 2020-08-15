@@ -13,8 +13,7 @@ defmodule GameTogetherOnline.Deals.Deal do
 
   schema "deals" do
     belongs_to :game, Game
-
-    field :hands, :any, virtual: true
+    has_many :hands, Hand
 
     timestamps(type: :utc_datetime_usec)
   end

@@ -4,12 +4,16 @@ defmodule GameTogetherOnline.DealsTest do
   alias GameTogetherOnline.Factory
   alias GameTogetherOnline.Deals
   alias GameTogetherOnline.Deals.Deal
+  alias GameTogetherOnline.Unpreloader
 
   test "create_deal/1 with valid data creates a deal" do
     params = Factory.params_for(:deal)
     {:ok, deal} = Deals.create_deal(params)
 
-    assert [%{deal | hands: nil}] == Repo.all(Deal)
+    assert Repo.all(Deal) ==
+             [deal]
+             |> Enum.map(&Unpreloader.forget(&1, :hands, :many))
+
     assert(deal.game_id == params[:game_id])
   end
 
