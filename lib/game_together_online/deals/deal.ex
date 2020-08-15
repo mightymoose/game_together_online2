@@ -1,13 +1,22 @@
 defmodule GameTogetherOnline.Deals.Deal do
   use Ecto.Schema
+  import Ecto.Changeset
 
   alias GameTogetherOnline.Cards
   alias GameTogetherOnline.Hands.Hand
+  alias GameTogetherOnline.Games.Game
 
   alias __MODULE__
 
-  embedded_schema do
-    field :hands
+  @primary_key {:id, :binary_id, read_after_writes: true}
+  @foreign_key_type :binary_id
+
+  schema "deals" do
+    belongs_to :game, Game
+
+    field :hands, :any, virtual: true
+
+    timestamps(type: :utc_datetime_usec)
   end
 
   def deal_cards(deal) do
@@ -15,6 +24,13 @@ defmodule GameTogetherOnline.Deals.Deal do
     |> Enum.shuffle()
     |> Enum.with_index()
     |> Enum.reduce(deal, &add_to_hand/2)
+  end
+
+  def changeset(deal, attrs \\ %{}) do
+    deal
+    |> cast(attrs, [:game_id])
+    |> validate_required([:game_id])
+    |> foreign_key_constraint(:game_id)
   end
 
   defp add_to_hand({card, index}, deal) do

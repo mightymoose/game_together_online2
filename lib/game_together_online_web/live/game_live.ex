@@ -9,7 +9,10 @@ defmodule GameTogetherOnlineWeb.GameLive do
       :ok,
       socket
       |> assign_new(:game_id, fn -> game_id end)
-      |> assign_new(:deal, fn -> Deals.create() |> Deal.deal_cards() end)
+      |> assign_new(:deal, fn ->
+        {:ok, deal} = Deals.create_deal(%{game_id: game_id})
+        Deal.deal_cards(deal)
+      end)
     }
   end
 
