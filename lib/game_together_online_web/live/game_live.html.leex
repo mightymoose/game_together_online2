@@ -2,8 +2,8 @@ Play the game here
 
 <%= for hand <- @deal.hands do %>
     <div class="flex">
-        <%= for card <- hand.cards do %>
-            <%= GameTogetherOnlineWeb.CardView.render("show.html", card: card) %>
+        <%= for delt_card <- hand.delt_cards do %>
+            <%= GameTogetherOnlineWeb.CardView.render("show.html", card: delt_card.card) %>
         <% end %>
     </div>
 <% end %>

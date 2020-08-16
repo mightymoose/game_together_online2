@@ -7,6 +7,7 @@ defmodule GameTogetherOnline.Cards do
   def list_cards(),
     do:
       Card
+      # TODO: Rip this join out :D
       |> preload([:rank, :suit])
       |> Repo.all()
 end
