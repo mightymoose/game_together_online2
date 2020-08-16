@@ -12,6 +12,13 @@ defmodule GameTogetherOnline.Hands.HandTest do
     assert changeset.errors[:deal_id] == {"can't be blank", [validation: :required]}
   end
 
+  test "hand_number is required" do
+    params = Factory.params_for(:hand, hand_number: nil)
+    changeset = Hand.changeset(%Hand{}, params)
+
+    assert changeset.errors[:hand_number] == {"can't be blank", [validation: :required]}
+  end
+
   test "deal_id must reference a deal" do
     {:error, changeset} =
       :hand

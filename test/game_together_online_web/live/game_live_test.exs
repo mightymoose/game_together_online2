@@ -2,11 +2,11 @@ defmodule GameTogetherOnlineWeb.GameLiveTest do
   use GameTogetherOnlineWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  alias GameTogetherOnline.Factory
+  alias GameTogetherOnline.Games
 
   describe "when there is a user in the session" do
     test "disconnected and connected render", %{conn: conn} do
-      game = Factory.insert(:game)
+      {:ok, game} = Games.create_game(%{})
 
       {:ok, page_live, disconnected_html} =
         conn

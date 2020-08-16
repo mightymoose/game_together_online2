@@ -1,12 +1,14 @@
 defmodule GameTogetherOnline.Deals.Deal do
   use Ecto.Schema
   import Ecto.Changeset
+  require Ecto.Query
 
+  alias GameTogetherOnline.Repo
+  alias Ecto.Query
   alias GameTogetherOnline.Cards
   alias GameTogetherOnline.Hands.Hand
   alias GameTogetherOnline.Games.Game
-
-  alias __MODULE__
+  alias GameTogetherOnline.DeltCards
 
   @primary_key {:id, :binary_id, read_after_writes: true}
   @foreign_key_type :binary_id
@@ -32,10 +34,15 @@ defmodule GameTogetherOnline.Deals.Deal do
     |> foreign_key_constraint(:game_id)
   end
 
-  defp add_to_hand({card, index}, deal) do
-    update_hand(deal, rem(index, 4), fn hand -> Hand.add_card(hand, card) end)
-  end
+  defp add_to_hand({card, index}, %{id: deal_id} = deal) do
+    hand_number = rem(index, 4)
 
-  defp update_hand(%Deal{hands: hands}, index, fun),
-    do: %Deal{hands: List.update_at(hands, index, fun)}
+    %{id: hand_id} =
+      Hand
+      |> Query.where(deal_id: ^deal_id, hand_number: ^hand_number)
+      |> Repo.one!()
+
+    DeltCards.create_delt_card(%{hand_id: hand_id, card_id: card.id})
+    deal
+  end
 end

@@ -10,7 +10,7 @@ defmodule GameTogetherOnline.HandsTest do
 
     {:ok, hand} = Hands.create_hand(params)
 
-    assert [%{hand | cards: nil}] == Repo.all(Hand)
+    assert [hand] == Repo.all(Hand)
     assert(hand.deal_id == params[:deal_id])
   end
 
