@@ -14,9 +14,10 @@ defmodule GameTogetherOnline.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: GameTogetherOnline.PubSub},
       # Start the Endpoint (http/https)
-      GameTogetherOnlineWeb.Endpoint
+      GameTogetherOnlineWeb.Endpoint,
       # Start a worker by calling: GameTogetherOnline.Worker.start_link(arg)
-      # {GameTogetherOnline.Worker, arg}
+      # {GameTogetherOnline.Worker, arg},
+      {GameTogetherOnline.GameTables, name: GameTogetherOnline.GameTables}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

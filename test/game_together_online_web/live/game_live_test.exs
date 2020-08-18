@@ -2,11 +2,25 @@ defmodule GameTogetherOnlineWeb.GameLiveTest do
   use GameTogetherOnlineWeb.ConnCase
 
   import Phoenix.LiveViewTest
+  require Ecto.Query
+
   alias GameTogetherOnline.Games
+  alias GameTogetherOnline.Games.Game
+  alias GameTogetherOnline.GameTables
+  alias GameTogetherOnline.Repo
+  alias Ecto.Query
 
   describe "when there is a user in the session" do
     test "disconnected and connected render", %{conn: conn} do
       {:ok, game} = Games.create_game(%{})
+
+      game_with_everything =
+        Game
+        |> Query.preload(deals: [hands: [delt_cards: [card: [:rank, :suit]]]])
+        |> Repo.get!(game.id)
+
+      GameTogetherOnline.GameTables
+      |> GameTables.create_game_table(game_with_everything)
 
       {:ok, page_live, disconnected_html} =
         conn
