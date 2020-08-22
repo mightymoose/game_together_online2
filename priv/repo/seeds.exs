@@ -15,6 +15,7 @@ alias GameTogetherOnline.Suits
 alias GameTogetherOnline.Ranks.Rank
 alias GameTogetherOnline.Ranks
 alias GameTogetherOnline.Cards.Card
+alias GameTogetherOnline.Seats.Seat
 alias GameTogetherOnline.Repo
 alias Ecto.Query
 
@@ -43,6 +44,13 @@ ranks = [
   [name: "Ace"]
 ]
 
+seats = [
+  [name: "North", seat_number: 0],
+  [name: "East", seat_number: 1],
+  [name: "South", seat_number: 2],
+  [name: "West", seat_number: 3]
+]
+
 Enum.each(suits, fn suit_attrs ->
   suit_exists? =
     Suit
@@ -65,6 +73,19 @@ Enum.each(ranks, fn rank_attrs ->
   if !rank_exists? do
     Repo.insert_all(Rank, [
       rank_attrs ++ [inserted_at: DateTime.utc_now(), updated_at: DateTime.utc_now()]
+    ])
+  end
+end)
+
+Enum.each(seats, fn seat_attrs ->
+  seat_exists? =
+    Seat
+    |> Query.where(^seat_attrs)
+    |> Repo.exists?()
+
+  if !seat_exists? do
+    Repo.insert_all(Seat, [
+      seat_attrs ++ [inserted_at: DateTime.utc_now(), updated_at: DateTime.utc_now()]
     ])
   end
 end)

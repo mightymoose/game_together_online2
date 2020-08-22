@@ -8,6 +8,7 @@ defmodule GameTogetherOnline.Factory do
   alias GameTogetherOnline.Ranks.Rank
   alias GameTogetherOnline.Suits.Suit
   alias GameTogetherOnline.Cards.Card
+  alias GameTogetherOnline.Seats.Seat
   alias GameTogetherOnline.DeltCards.DeltCard
 
   def user_factory do
@@ -80,5 +81,12 @@ defmodule GameTogetherOnline.Factory do
     card = insert(:card)
 
     %DeltCard{card_id: card.id, hand_id: hand.id}
+  end
+
+  def seat_factory do
+    %Seat{
+      name: sequence(:name, &"name-#{&1}"),
+      seat_number: sequence(:seat_number, & &1)
+    }
   end
 end
