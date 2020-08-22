@@ -3,14 +3,13 @@ defmodule GameTogetherOnlineWeb.GameLive do
   require Ecto.Query
 
   alias GameTogetherOnline.GameTables.GameTable
+  alias GameTogetherOnline.Spades.AwaitingPlayers
 
   def mount(%{"game_id" => game_id}, %{"current_user_id" => _current_user_id}, socket) do
-    game_summary = GameTable.summarize(game_id)
-
     {
       :ok,
       socket
-      |> assign_new(:game, fn -> game_summary end)
+      |> assign_new(:game, fn -> GameTable.summarize(game_id) end)
     }
   end
 
@@ -19,5 +18,9 @@ defmodule GameTogetherOnlineWeb.GameLive do
      redirect(socket,
        to: Routes.user_path(socket, :new, redirect: Routes.game_path(socket, :show, game_id))
      )}
+  end
+
+  def render(%{game: %AwaitingPlayers{}} = assigns) do
+    Phoenix.View.render(GameTogetherOnlineWeb.GameView, "awaiting_players.html", assigns)
   end
 end

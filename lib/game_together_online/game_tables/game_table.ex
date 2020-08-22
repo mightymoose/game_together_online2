@@ -1,11 +1,7 @@
 defmodule GameTogetherOnline.GameTables.GameTable do
   use GenServer
 
-  require Ecto.Query
-
-  alias Ecto.Query
-  alias GameTogetherOnline.Games.Game
-  alias GameTogetherOnline.Repo
+  alias GameTogetherOnline.Spades.AwaitingPlayers
 
   def start_link(game_id), do: GenServer.start_link(__MODULE__, game_id, name: via_tuple(game_id))
 
@@ -26,12 +22,5 @@ defmodule GameTogetherOnline.GameTables.GameTable do
   defp via_tuple(game_id),
     do: {:via, Registry, {GameTogetherOnline.GameTables.GameTable.Registry, game_id}}
 
-  def handle_call(:summarize, _from, game_id) do
-    game_summary =
-      Game
-      |> Query.preload(deals: [hands: [delt_cards: [card: [:rank, :suit]]]])
-      |> Repo.get!(game_id)
-
-    {:reply, game_summary, game_id}
-  end
+  def handle_call(:summarize, _from, game_id), do: {:reply, %AwaitingPlayers{}, game_id}
 end
