@@ -4,6 +4,7 @@ defmodule GameTogetherOnlineWeb.GameControllerTest do
   alias GameTogetherOnline.Factory
   alias GameTogetherOnline.Repo
   alias GameTogetherOnline.Games.Game
+  alias GameTogetherOnline.GameTables
 
   describe "new game" do
     test "redirects to create a user when there is no session", %{conn: conn} do
@@ -21,6 +22,7 @@ defmodule GameTogetherOnlineWeb.GameControllerTest do
       |> get(Routes.game_path(conn, :new))
 
       assert [%{id: id}] = Repo.all(Game)
+      GameTables.stop_game_table(id)
     end
 
     test "redirects to the game when there is a session", %{conn: conn} do

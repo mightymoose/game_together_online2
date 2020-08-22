@@ -17,7 +17,8 @@ defmodule GameTogetherOnline.Application do
       GameTogetherOnlineWeb.Endpoint,
       # Start a worker by calling: GameTogetherOnline.Worker.start_link(arg)
       # {GameTogetherOnline.Worker, arg},
-      {GameTogetherOnline.GameTables, name: GameTogetherOnline.GameTables}
+      {Registry, keys: :unique, name: GameTogetherOnline.GameTables.GameTable.Registry},
+      {GameTogetherOnline.GameTables, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
