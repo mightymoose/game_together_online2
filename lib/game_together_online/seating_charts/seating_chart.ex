@@ -15,8 +15,8 @@ defmodule GameTogetherOnline.SeatingCharts.SeatingChart do
     timestamps(type: :utc_datetime_usec)
   end
 
-  def changeset(card, attrs \\ %{}) do
-    card
+  def changeset(seating_chart, attrs \\ %{}) do
+    seating_chart
     |> cast(attrs, [:game_id, :seat_id])
     |> validate_required([:game_id, :seat_id])
     |> foreign_key_constraint(:game_id)

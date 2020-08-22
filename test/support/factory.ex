@@ -10,6 +10,7 @@ defmodule GameTogetherOnline.Factory do
   alias GameTogetherOnline.Cards.Card
   alias GameTogetherOnline.Seats.Seat
   alias GameTogetherOnline.SeatingCharts.SeatingChart
+  alias GameTogetherOnline.AssignedSeats.AssignedSeat
   alias GameTogetherOnline.DeltCards.DeltCard
 
   def user_factory do
@@ -98,6 +99,16 @@ defmodule GameTogetherOnline.Factory do
     %SeatingChart{
       seat_id: seat.id,
       game_id: game.id
+    }
+  end
+
+  def assigned_seat_factory do
+    user = insert(:user)
+    seating_chart = insert(:seating_chart)
+
+    %AssignedSeat{
+      user_id: user.id,
+      seating_chart_id: seating_chart.id
     }
   end
 end
