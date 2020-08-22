@@ -1,40 +1,26 @@
 defmodule GameTogetherOnline.GameTables do
-  use GenServer
+  use DynamicSupervisor
 
-  alias GameTogetherOnline.GameTables.GameTableNotFoundException
+  alias GameTogetherOnline.GameTables.GameTable
 
-  def start_link(options \\ []),
-    do: GenServer.start_link(__MODULE__, nil, options)
-
-  def create_game_table(game_tables, game) do
-    GenServer.cast(game_tables, {:create_game_table, game})
+  def start_link(_) do
+    DynamicSupervisor.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
-  def get_game_table!(game_tables, game) do
-    game_table = GenServer.call(game_tables, {:get_game_table, game})
+  def start_game_table(game_id) do
+    child_spec = %{
+      id: GameTable,
+      start: {GameTable, :start_link, [game_id]},
+      restart: :transient
+    }
 
-    case game_table do
-      nil ->
-        raise GameTableNotFoundException, message: "Could not find a table for game #{game.id}"
-
-      _ ->
-        game_table
-    end
+    DynamicSupervisor.start_child(__MODULE__, child_spec)
   end
 
-  @impl true
-  def handle_cast({:create_game_table, game}, %{game_tables: game_tables} = state) do
-    updated_game_tables = Map.put(game_tables, game.id, game)
-    {:noreply, %{state | game_tables: updated_game_tables}}
+  def stop_game_table(game_id) do
+    game_table = GameTable.get(game_id)
+    DynamicSupervisor.terminate_child(__MODULE__, game_table)
   end
 
-  @impl true
-  def handle_call({:get_game_table, game}, _from, %{game_tables: game_tables} = state) do
-    {:reply, game_tables[game.id], state}
-  end
-
-  @impl true
-  def init(_) do
-    {:ok, %{game_tables: %{}}}
-  end
+  def init(:ok), do: DynamicSupervisor.init(strategy: :one_for_one)
 end

@@ -4,10 +4,7 @@ defmodule GameTogetherOnlineWeb.GameController do
   require Ecto.Query
 
   alias GameTogetherOnline.Games
-  alias GameTogetherOnline.Games.Game
   alias GameTogetherOnline.GameTables
-  alias GameTogetherOnline.Repo
-  alias Ecto.Query
 
   def new(conn, _params) do
     case get_session(conn, :current_user_id) do
@@ -17,17 +14,11 @@ defmodule GameTogetherOnlineWeb.GameController do
         )
 
       _ ->
-        {:ok, %{id: game_id}} = Games.create_game()
+        {:ok, game} = Games.create_game()
 
-        game_with_everything =
-          Game
-          |> Query.preload(deals: [hands: [delt_cards: [card: [:rank, :suit]]]])
-          |> Repo.get!(game_id)
+        GameTables.start_game_table(game.id)
 
-        GameTogetherOnline.GameTables
-        |> GameTables.create_game_table(game_with_everything)
-
-        redirect(conn, to: Routes.game_path(conn, :show, game_id))
+        redirect(conn, to: Routes.game_path(conn, :show, game))
     end
   end
 
