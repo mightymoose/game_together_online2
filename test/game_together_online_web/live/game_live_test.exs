@@ -18,8 +18,8 @@ defmodule GameTogetherOnlineWeb.GameLiveTest do
         |> Plug.Test.init_test_session(%{current_user_id: "user id"})
         |> live(Routes.game_path(conn, :show, game))
 
-      assert disconnected_html =~ "Play the game here"
-      assert render(page_live) =~ "Play the game here"
+      assert disconnected_html =~ "Awaiting players"
+      assert render(page_live) =~ "Awaiting players"
     end
   end
 
