@@ -1,14 +1,15 @@
 defmodule GameTogetherOnline.Games do
   alias GameTogetherOnline.Repo
   alias GameTogetherOnline.Games.Game
-  alias GameTogetherOnline.Deals
+  alias GameTogetherOnline.Seats
+  alias GameTogetherOnline.SeatingCharts
 
   def create_game(attrs \\ %{}),
     do:
       %Game{}
       |> Game.changeset(attrs)
       |> Repo.insert()
-      |> create_deal()
+      |> create_seating_charts()
 
   def start_game(game_id) do
     game = get_game!(game_id)
@@ -27,10 +28,15 @@ defmodule GameTogetherOnline.Games do
       |> Game.changeset(attrs)
       |> Repo.update()
 
-  defp create_deal({:ok, game}) do
-    Deals.create_deal(%{game_id: game.id})
+  defp create_seating_charts({:ok, game}) do
+    Seats.list_seats()
+    |> Enum.each(fn %{id: seat_id} ->
+      {:ok, _seating_chart} =
+        SeatingCharts.create_seating_chart(%{seat_id: seat_id, game_id: game.id})
+    end)
+
     {:ok, game}
   end
 
-  defp create_deal(error), do: error
+  defp create_seating_charts(error), do: error
 end
