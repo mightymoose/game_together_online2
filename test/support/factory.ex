@@ -87,7 +87,7 @@ defmodule GameTogetherOnline.Factory do
 
   def seat_factory do
     %Seat{
-      name: sequence(:name, &"name-#{&1}"),
+      name: sequence(:seat_name, &"seat-name-#{&1}"),
       seat_number: sequence(:seat_number, & &1)
     }
   end

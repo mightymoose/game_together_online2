@@ -6,11 +6,13 @@ defmodule GameTogetherOnlineWeb.GameLiveTest do
 
   alias GameTogetherOnline.Games
   alias GameTogetherOnline.GameTables
+  alias GameTogetherOnline.Factory
 
   describe "when there is a user in the session" do
     test "disconnected and connected render", %{conn: conn} do
-      {:ok, game} = Games.create_game(%{})
+      seat = Factory.insert(:seat)
 
+      {:ok, game} = Games.create_game(%{})
       GameTables.start_game_table(game.id)
 
       {:ok, page_live, disconnected_html} =
@@ -18,8 +20,8 @@ defmodule GameTogetherOnlineWeb.GameLiveTest do
         |> Plug.Test.init_test_session(%{current_user_id: "user id"})
         |> live(Routes.game_path(conn, :show, game))
 
-      assert disconnected_html =~ "Awaiting players"
-      assert render(page_live) =~ "Awaiting players"
+      assert disconnected_html =~ seat.name
+      assert render(page_live) =~ seat.name
     end
   end
 

@@ -1,1 +1,7 @@
 Awaiting players
+
+<%= for seating_chart <- @awaiting_players.seating_charts do %>
+    <div>
+        <%= seating_chart.seat.name %>
+    </div>
+<% end %>
