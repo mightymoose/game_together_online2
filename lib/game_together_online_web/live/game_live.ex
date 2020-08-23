@@ -4,6 +4,7 @@ defmodule GameTogetherOnlineWeb.GameLive do
 
   alias GameTogetherOnline.GameTables.GameTable
   alias GameTogetherOnline.Spades.AwaitingPlayers
+  alias GameTogetherOnlineWeb.GameView
 
   def mount(%{"game_id" => game_id}, %{"current_user_id" => _current_user_id}, socket) do
     {
@@ -20,7 +21,9 @@ defmodule GameTogetherOnlineWeb.GameLive do
      )}
   end
 
-  def render(%{game: %AwaitingPlayers{}} = assigns) do
-    Phoenix.View.render(GameTogetherOnlineWeb.GameView, "awaiting_players.html", assigns)
-  end
+  def render(%{game: %AwaitingPlayers{} = awaiting_players}),
+    do:
+      Phoenix.View.render(GameView, "awaiting_players.html", %{
+        awaiting_players: awaiting_players
+      })
 end

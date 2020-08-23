@@ -1,3 +1,3 @@
 defmodule GameTogetherOnline.Spades.AwaitingPlayers do
-  defstruct seating_chart: []
+  defstruct seating_charts: []
 end

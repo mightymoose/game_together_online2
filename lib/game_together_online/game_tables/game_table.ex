@@ -2,6 +2,7 @@ defmodule GameTogetherOnline.GameTables.GameTable do
   use GenServer
 
   alias GameTogetherOnline.Spades.AwaitingPlayers
+  alias GameTogetherOnline.SeatingCharts
 
   def start_link(game_id), do: GenServer.start_link(__MODULE__, game_id, name: via_tuple(game_id))
 
@@ -22,5 +23,8 @@ defmodule GameTogetherOnline.GameTables.GameTable do
   defp via_tuple(game_id),
     do: {:via, Registry, {GameTogetherOnline.GameTables.GameTable.Registry, game_id}}
 
-  def handle_call(:summarize, _from, game_id), do: {:reply, %AwaitingPlayers{}, game_id}
+  def handle_call(:summarize, _from, game_id) do
+    seatings_charts = SeatingCharts.with_game_id(game_id)
+    {:reply, %AwaitingPlayers{seating_charts: seatings_charts}, game_id}
+  end
 end

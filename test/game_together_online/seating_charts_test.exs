@@ -20,4 +20,14 @@ defmodule GameTogetherOnline.SeatingChartsTest do
     assert {:error, %Ecto.Changeset{}} = SeatingCharts.create_seating_chart(params)
     assert [] == Repo.all(SeatingChart)
   end
+
+  test "with_game_id/1 returns the seating charts with the given game id" do
+    included_seating_chart = Factory.insert(:seating_chart)
+    Factory.insert(:seating_chart)
+
+    assert [included_seating_chart] ==
+             included_seating_chart.game_id
+             |> SeatingCharts.with_game_id()
+             |> Enum.map(&GameTogetherOnline.Unpreloader.forget(&1, :seat))
+  end
 end
